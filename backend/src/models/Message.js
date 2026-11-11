@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { PLATFORMS } from '../core/platforms.js';
 
 const attachmentSchema = new mongoose.Schema(
   {
@@ -12,7 +13,7 @@ const attachmentSchema = new mongoose.Schema(
 
 const messageSchema = new mongoose.Schema(
   {
-    platform: { type: String, enum: ['sms', 'telegram', 'gmail'], required: true },
+    platform: { type: String, enum: PLATFORMS, required: true },
     externalId: { type: String, required: true }, // platform's own message id
     conversationKey: { type: String, required: true }, // `${platform}:${externalConversationId}`
     from: {

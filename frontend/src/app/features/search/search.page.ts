@@ -53,7 +53,7 @@ interface Result {
             type="search"
             [value]="term()"
             (input)="onInput($any($event.target).value)"
-            placeholder="Search SMS, Telegram and Gmail…"
+            placeholder="Search SMS, WhatsApp, Telegram and Gmail…"
             class="w-full rounded-lg border border-slate-300 bg-white py-2.5 pr-3 pl-9 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 dark:border-slate-700 dark:bg-slate-950"
           />
         </label>

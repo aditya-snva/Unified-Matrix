@@ -20,6 +20,13 @@ export const env = {
     webhookToken: process.env.SMS_WEBHOOK_TOKEN || '',
   },
 
+  whatsapp: {
+    // Any string you choose; paste the same value in Meta's webhook settings.
+    verifyToken: process.env.WHATSAPP_VERIFY_TOKEN || '',
+    // Meta App > Settings > Basic > App secret. Used to verify webhook signatures.
+    appSecret: process.env.WHATSAPP_APP_SECRET || '',
+  },
+
   telegram: {
     apiId: num(process.env.TELEGRAM_API_ID, 0),
     apiHash: process.env.TELEGRAM_API_HASH || '',
@@ -43,4 +50,5 @@ export const isConfigured = {
   telegram: () => Boolean(env.telegram.apiId && env.telegram.apiHash && env.telegram.session),
   gmail: () => Boolean(env.gmail.clientId && env.gmail.clientSecret && env.gmail.refreshToken),
   sms: () => Boolean(env.sms.webhookToken),
+  whatsapp: () => Boolean(env.whatsapp.verifyToken && env.whatsapp.appSecret),
 };

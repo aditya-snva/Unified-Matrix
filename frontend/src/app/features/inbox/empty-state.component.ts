@@ -10,7 +10,7 @@ import { LogoComponent } from '../../shared/logo.component';
     <app-logo size="size-14" class="opacity-90" />
     <h2 class="mt-4 text-lg font-semibold">Pick a conversation</h2>
     <p class="mt-1 max-w-xs text-sm text-slate-500 dark:text-slate-400">
-      Messages from SMS, Telegram and Gmail arrive here in real time.
+      Messages from SMS, WhatsApp, Telegram and Gmail arrive here in real time.
     </p>
   `,
 })

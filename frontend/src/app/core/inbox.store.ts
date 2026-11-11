@@ -14,7 +14,7 @@ import { NotificationService } from './notification.service';
 import { SocketService } from './socket.service';
 
 const PAGE_SIZE = 30;
-const EMPTY_COUNTS: UnreadCounts = { total: 0, sms: 0, telegram: 0, gmail: 0 };
+const EMPTY_COUNTS: UnreadCounts = { total: 0, sms: 0, whatsapp: 0, telegram: 0, gmail: 0 };
 
 /**
  * Single source of truth for the inbox: conversation list, filters, unread counts,

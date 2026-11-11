@@ -2,9 +2,9 @@ import { Router } from 'express';
 import { Conversation } from '../../models/Conversation.js';
 import { Message } from '../../models/Message.js';
 import { markConversationRead } from '../../core/messageService.js';
+import { PLATFORMS } from '../../core/platforms.js';
 
 const router = Router();
-const PLATFORMS = ['sms', 'telegram', 'gmail'];
 
 const clampLimit = (v, def = 30, max = 100) => Math.min(Math.max(Number(v) || def, 1), max);
 
@@ -30,11 +30,11 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-/** GET /api/conversations/unread-counts -> { total, sms, telegram, gmail } */
+/** GET /api/conversations/unread-counts -> { total, sms, telegram, gmail, whatsapp } */
 router.get('/unread-counts', async (req, res, next) => {
   try {
     const rows = await Conversation.aggregate([{ $group: { _id: '$platform', count: { $sum: '$unreadCount' } } }]);
-    const counts = { total: 0, sms: 0, telegram: 0, gmail: 0 };
+    const counts = { total: 0, ...Object.fromEntries(PLATFORMS.map((p) => [p, 0])) };
     for (const r of rows) {
       counts[r._id] = r.count;
       counts.total += r.count;

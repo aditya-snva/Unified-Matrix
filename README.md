@@ -1,6 +1,6 @@
 # Unified Matrix
 
-A personal, read-only inbox that shows **SMS (Android)**, **Telegram** and **Gmail** messages in one place, in real time.
+A personal, read-only inbox that shows **SMS (Android)**, **WhatsApp Business**, **Telegram** and **Gmail** messages in one place, in real time.
 
 | Folder | What | Stack |
 |---|---|---|

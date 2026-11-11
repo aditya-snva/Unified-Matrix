@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { Message } from '../../models/Message.js';
+import { PLATFORMS } from '../../core/platforms.js';
 
 const router = Router();
-const PLATFORMS = ['sms', 'telegram', 'gmail'];
 
 /**
  * GET /api/messages?q=invoice&platform=gmail&limit=30&before=<ISO date>

@@ -203,7 +203,9 @@ export class ConversationViewComponent {
     const c = this.conversation();
     if (!c) return '';
     const label = PLATFORM_META[c.platform].label;
-    if (c.platform === 'sms') return c.title !== c.externalId ? `${c.externalId} · ${label}` : label;
+    if (c.platform === 'sms' || c.platform === 'whatsapp') {
+      return c.title !== c.externalId ? `${c.externalId} · ${label}` : label;
+    }
     if (c.platform === 'gmail') return `${this.messages().length} email${this.messages().length === 1 ? '' : 's'} · ${label}`;
     const lastIn = [...this.messages()].reverse().find((m) => m.direction === 'in');
     const handle = c.type === 'private' ? lastIn?.from.handle : c.type;

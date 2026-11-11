@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
+import { PLATFORMS } from '../core/platforms.js';
 
 const conversationSchema = new mongoose.Schema(
   {
     key: { type: String, required: true, unique: true }, // `${platform}:${externalId}`
-    platform: { type: String, enum: ['sms', 'telegram', 'gmail'], required: true },
+    platform: { type: String, enum: PLATFORMS, required: true },
     externalId: { type: String, required: true },
     title: String,
     type: { type: String, default: 'private' }, // private | group | channel | email | sms

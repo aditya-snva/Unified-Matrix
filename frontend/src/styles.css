@@ -7,7 +7,8 @@
   --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
   /* One fixed colour per platform */
-  --color-sms: #059669;
+  --color-sms: #7c3aed;
+  --color-whatsapp: #16a34a;
   --color-telegram: #0284c7;
   --color-gmail: #e11d48;
 }

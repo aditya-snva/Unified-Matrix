@@ -5,6 +5,9 @@ import { PLATFORM_META, Platform } from '../core/models';
 const GLYPHS: Record<Platform, string> = {
   // phone with chat lines
   sms: 'M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm1 4v2h8V6H8Zm0 4v2h6v-2H8Zm3 8a1 1 0 1 0 2 0 1 1 0 0 0-2 0Z',
+  // round speech bubble with typing dots
+  whatsapp:
+    'M12 2a10 10 0 0 0-8.66 15L2 22l5.12-1.32A10 10 0 1 0 12 2Zm0 2a8 8 0 1 1-4.18 14.82l-.36-.22-2.6.67.7-2.5-.24-.38A8 8 0 0 1 12 4ZM7.5 11a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5Zm4.5 0a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5Zm4.5 0a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5Z',
   // paper plane
   telegram: 'M21.6 3.2 2.9 10.4c-1 .4-1 1.8.1 2.1l4.6 1.4 1.8 5.6c.3.9 1.4 1.1 2 .4l2.5-2.6 4.6 3.4c.8.6 1.9.1 2.1-.8l3-15.1c.2-1.1-.9-2-2-1.6ZM9.6 14.2l8.5-7.6-6.8 9.1-.3 2.9-1.4-4.4Z',
   // envelope

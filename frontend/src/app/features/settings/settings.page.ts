@@ -15,6 +15,22 @@ const HELP: Record<Platform, string> = {
   telegram: 'Set TELEGRAM_API_ID / TELEGRAM_API_HASH in backend .env, run "npm run telegram:login", paste TELEGRAM_SESSION, restart.',
   gmail: 'Set GMAIL_CLIENT_ID / GMAIL_CLIENT_SECRET in backend .env, run "npm run gmail:auth", paste GMAIL_REFRESH_TOKEN, restart.',
   sms: 'Set SMS_WEBHOOK_TOKEN in backend .env, then point your Android forwarder at the webhook URL below.',
+  whatsapp:
+    'Set WHATSAPP_VERIFY_TOKEN and WHATSAPP_APP_SECRET in backend .env and restart. Then in your Meta app (WhatsApp > Configuration) set the callback URL below, the same verify token, and subscribe to the "messages" field.',
+};
+
+/** Webhook endpoint details shown under each push-based source. */
+const WEBHOOKS: Partial<Record<Platform, { path: string; label: string; note: string }>> = {
+  sms: {
+    path: '/webhooks/sms',
+    label: 'Webhook URL for the phone app',
+    note: 'Header: Authorization: Bearer <SMS_WEBHOOK_TOKEN>',
+  },
+  whatsapp: {
+    path: '/webhooks/whatsapp',
+    label: 'Callback URL for Meta (must be public HTTPS)',
+    note: 'Verify token: your WHATSAPP_VERIFY_TOKEN. Subscribe to "messages" (and "smb_message_echoes" to also see replies sent from the WhatsApp Business app).',
+  },
 };
 
 @Component({
@@ -62,8 +78,8 @@ const HELP: Record<Platform, string> = {
                     <p class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
                       <app-status-dot [state]="s?.state" />
                       {{ s ? labels[s.state] : 'Unknown' }}
-                      @if (p === 'sms' && s?.state === 'connected') {
-                        · phone last seen {{ s?.lastSeenAt | ago }}
+                      @if (webhooks[p] && s?.state === 'connected') {
+                        · {{ p === 'sms' ? 'phone last seen' : 'last webhook' }} {{ s?.lastSeenAt | ago }}
                       } @else if (s?.updatedAt) {
                         · since <span [title]="s!.updatedAt | fullDate">{{ s!.updatedAt | ago }}</span>
                       }
@@ -78,21 +94,21 @@ const HELP: Record<Platform, string> = {
                 @if (!s || s.state === 'not_configured') {
                   <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">{{ help[p] }}</p>
                 }
-                @if (p === 'sms') {
+                @if (webhooks[p]; as hook) {
                   <div class="mt-3">
-                    <p class="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">Webhook URL for the phone app</p>
+                    <p class="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{{ hook.label }}</p>
                     <div class="flex items-center gap-2">
-                      <code class="min-w-0 flex-1 truncate rounded-lg bg-slate-100 px-3 py-2 text-xs dark:bg-slate-900">{{ webhookUrl }}</code>
+                      <code class="min-w-0 flex-1 truncate rounded-lg bg-slate-100 px-3 py-2 text-xs dark:bg-slate-900">{{ baseUrl + hook.path }}</code>
                       <button
                         type="button"
-                        (click)="copy()"
+                        (click)="copy(p, baseUrl + hook.path)"
                         class="flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-2 text-xs font-medium hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
                       >
-                        <app-icon [name]="copied() ? 'check' : 'copy'" size="size-3.5" />
-                        {{ copied() ? 'Copied' : 'Copy' }}
+                        <app-icon [name]="copied() === p ? 'check' : 'copy'" size="size-3.5" />
+                        {{ copied() === p ? 'Copied' : 'Copy' }}
                       </button>
                     </div>
-                    <p class="mt-1.5 text-xs text-slate-400">Header: Authorization: Bearer &lt;SMS_WEBHOOK_TOKEN&gt;</p>
+                    <p class="mt-1.5 text-xs text-slate-400">{{ hook.note }}</p>
                   </div>
                 }
               </div>
@@ -184,8 +200,9 @@ export class SettingsPage {
   protected readonly meta = PLATFORM_META;
   protected readonly labels = STATE_LABELS;
   protected readonly help = HELP;
-  protected readonly copied = signal(false);
-  protected readonly webhookUrl = `${environment.apiUrl || window.location.origin}/webhooks/sms`;
+  protected readonly webhooks = WEBHOOKS;
+  protected readonly copied = signal<Platform | null>(null);
+  protected readonly baseUrl = environment.apiUrl || window.location.origin;
   protected readonly themes: { mode: ThemeMode; label: string; icon: IconName }[] = [
     { mode: 'system', label: 'System', icon: 'monitor' },
     { mode: 'light', label: 'Light', icon: 'sun' },
@@ -196,11 +213,11 @@ export class SettingsPage {
     this.store.refreshStatus();
   }
 
-  protected async copy(): Promise<void> {
+  protected async copy(p: Platform, url: string): Promise<void> {
     try {
-      await navigator.clipboard.writeText(this.webhookUrl);
-      this.copied.set(true);
-      setTimeout(() => this.copied.set(false), 1500);
+      await navigator.clipboard.writeText(url);
+      this.copied.set(p);
+      setTimeout(() => this.copied.set(null), 1500);
     } catch {
       /* clipboard blocked */
     }

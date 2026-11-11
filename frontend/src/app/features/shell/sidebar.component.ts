@@ -4,7 +4,7 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { filter, interval, map } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
 import { InboxStore } from '../../core/inbox.store';
-import { PLATFORMS, PLATFORM_META, Platform, PlatformFilter } from '../../core/models';
+import { PLATFORMS, PLATFORM_META, Platform, PlatformFilter, WEBHOOK_PLATFORMS } from '../../core/models';
 import { ThemeService } from '../../core/theme.service';
 import { UiStateService } from '../../core/ui-state.service';
 import { IconComponent } from '../../shared/icon.component';
@@ -151,7 +151,9 @@ export class SidebarComponent {
     const s = this.store.statuses()[p];
     this.now(); // re-evaluate on tick
     if (!s) return '';
-    if (p === 'sms' && s.state === 'connected') return s.lastSeenAt ? this.ago.transform(s.lastSeenAt) : 'waiting';
+    if (WEBHOOK_PLATFORMS.includes(p) && s.state === 'connected') {
+      return s.lastSeenAt ? this.ago.transform(s.lastSeenAt) : 'waiting';
+    }
     return s.state === 'connected' ? '' : STATE_LABELS[s.state];
   }
 

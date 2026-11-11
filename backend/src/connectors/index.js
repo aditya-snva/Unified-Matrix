@@ -30,8 +30,9 @@ async function startOne(entry) {
 
 /** Start every configured connector. Missing credentials are skipped, not fatal. */
 export async function startConnectors() {
-  // SMS is push-only (webhook), so it has no connector process; just report its status.
+  // SMS and WhatsApp are push-only (webhooks), so they have no connector process; just report status.
   setStatus('sms', isConfigured.sms() ? 'connected' : 'not_configured');
+  setStatus('whatsapp', isConfigured.whatsapp() ? 'connected' : 'not_configured');
 
   await Promise.all(
     registry.map(async (entry) => {

@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       <rect x="6" y="6" width="9" height="9" rx="2.5" class="fill-sms" />
       <rect x="17" y="6" width="9" height="9" rx="2.5" class="fill-telegram" />
       <rect x="6" y="17" width="9" height="9" rx="2.5" class="fill-gmail" />
-      <rect x="17" y="17" width="9" height="9" rx="2.5" class="fill-slate-50" />
+      <rect x="17" y="17" width="9" height="9" rx="2.5" class="fill-whatsapp" />
     </svg>
   `,
 })

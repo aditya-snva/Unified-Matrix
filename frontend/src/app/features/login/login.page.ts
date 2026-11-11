@@ -20,7 +20,7 @@ import { LogoComponent } from '../../shared/logo.component';
           <app-logo size="size-12" />
           <div>
             <h1 class="text-xl font-semibold">Unified Matrix</h1>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">SMS, Telegram and Gmail in one place</p>
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">SMS, WhatsApp, Telegram and Gmail in one place</p>
           </div>
         </div>
 

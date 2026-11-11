@@ -1,7 +1,10 @@
-export type Platform = 'sms' | 'telegram' | 'gmail';
+export type Platform = 'sms' | 'whatsapp' | 'telegram' | 'gmail';
 export type PlatformFilter = Platform | 'all';
 
-export const PLATFORMS: Platform[] = ['sms', 'telegram', 'gmail'];
+export const PLATFORMS: Platform[] = ['sms', 'whatsapp', 'telegram', 'gmail'];
+
+/** Platforms that push to us via webhook (status shows "last seen" instead of a live connection). */
+export const WEBHOOK_PLATFORMS: Platform[] = ['sms', 'whatsapp'];
 
 export interface Attachment {
   type: string;
@@ -52,12 +55,7 @@ export interface ConnectorStatus {
 
 export type ConnectorStatuses = Partial<Record<Platform, ConnectorStatus>>;
 
-export interface UnreadCounts {
-  total: number;
-  sms: number;
-  telegram: number;
-  gmail: number;
-}
+export type UnreadCounts = { total: number } & Record<Platform, number>;
 
 export interface LiveMessageEvent {
   message: Message;
@@ -73,8 +71,15 @@ export const PLATFORM_META: Record<
     label: 'SMS',
     text: 'text-sms',
     bg: 'bg-sms',
-    soft: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300',
-    ring: 'ring-emerald-500/30',
+    soft: 'bg-violet-50 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300',
+    ring: 'ring-violet-500/30',
+  },
+  whatsapp: {
+    label: 'WhatsApp',
+    text: 'text-whatsapp',
+    bg: 'bg-whatsapp',
+    soft: 'bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-300',
+    ring: 'ring-green-500/30',
   },
   telegram: {
     label: 'Telegram',
