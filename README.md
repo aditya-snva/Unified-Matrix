@@ -6,6 +6,7 @@ A personal, read-only inbox that shows **SMS (Android)**, **WhatsApp Business**,
 |---|---|---|
 | [backend/](backend/) | API, connectors, SMS webhook, live updates | Node.js, Express, MongoDB, Socket.IO |
 | [frontend/](frontend/) | Web app, installable as a PWA | Angular 22, Tailwind CSS v4 |
+| [deploy/](deploy/) | Hosting: Vercel (frontend) + free VM (backend) + MongoDB Atlas | Caddy, systemd |
 
 ## Quick start
 
@@ -23,3 +24,5 @@ npm start                 # http://localhost:4200
 ```
 
 See [backend/README.md](backend/README.md) for connecting Telegram, Gmail and SMS, and [frontend/README.md](frontend/README.md) for PWA notes.
+
+**Going live:** see [deploy/README.md](deploy/README.md).

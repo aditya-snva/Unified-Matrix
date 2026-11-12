@@ -11,12 +11,14 @@ npm test           # unit tests (Vitest)
 npm run build      # production build -> dist/unified-matrix/browser (includes service worker)
 ```
 
-The backend URL is set in `src/environments/environment*.ts` (`apiUrl`). The backend's `CLIENT_ORIGIN` must match the URL this app is served from.
+The backend URL is set in `src/environments/environment*.ts` (`apiUrl`). The backend's `CLIENT_ORIGIN` must include the URL this app is served from.
+
+**Vercel:** `vercel.json` builds with `npm run build:vercel`, which writes the `API_URL` environment variable (set in Vercel) into the production `apiUrl`. See [../deploy/README.md](../deploy/README.md).
 
 ## PWA
 
 - The service worker is **only active in production builds**, not during `npm start`.
-- Install prompts and service workers need **HTTPS** (or `localhost`). Serve the production build behind Tailscale/Cloudflare Tunnel to install it on your phone.
+- Install prompts and service workers need **HTTPS** (or `localhost`). Once deployed on Vercel it can be installed from your phone's browser.
 - New versions are detected automatically, and the app asks before reloading.
 - App icons live in `public/icons/` (Angular defaults for now; replace with your own PNGs at the same sizes).
 

@@ -24,8 +24,8 @@ async function start() {
   const server = http.createServer(app);
   initSocket(server);
 
-  await new Promise((resolve) => server.listen(env.port, resolve));
-  console.log(`Server running on http://localhost:${env.port}`);
+  await new Promise((resolve) => server.listen(env.port, env.host, resolve));
+  console.log(`Server running on http://${env.host || 'localhost'}:${env.port}`);
 
   // Connectors start after the server is up; a failing connector never blocks the API.
   startConnectors().catch((err) => console.error('[connectors]', err));

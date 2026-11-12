@@ -7,8 +7,14 @@ const num = (v, def) => (v === undefined || v === '' || Number.isNaN(Number(v)) 
 export const env = {
   nodeEnv: process.env.NODE_ENV || 'development',
   port: num(process.env.PORT, 4000),
+  // Set HOST=127.0.0.1 on a server so only the reverse proxy (Caddy) can reach the app.
+  host: process.env.HOST || undefined,
   mongoUri: process.env.MONGO_URI || 'mongodb://localhost:27017/unified_matrix',
-  clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:4200',
+  // Comma-separated list, e.g. "https://unified-matrix.vercel.app,http://localhost:4200"
+  clientOrigin: (process.env.CLIENT_ORIGIN || 'http://localhost:4200')
+    .split(',')
+    .map((o) => o.trim().replace(/\/+$/, ''))
+    .filter(Boolean),
 
   auth: {
     adminPassword: process.env.ADMIN_PASSWORD || '',
