@@ -5,6 +5,7 @@ import { env } from './config/env.js';
 import apiRoutes from './api/routes/index.js';
 import smsWebhook from './webhooks/sms.js';
 import whatsappWebhook from './webhooks/whatsapp.js';
+import httpSmsWebhook from './webhooks/httpsms.js';
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(
 app.use('/api', apiRoutes);
 app.use('/webhooks/sms', smsWebhook);
 app.use('/webhooks/whatsapp', whatsappWebhook);
+app.use('/webhooks/httpsms', httpSmsWebhook);
 
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
 

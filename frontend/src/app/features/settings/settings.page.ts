@@ -14,7 +14,7 @@ import { AgoPipe, FullDatePipe } from '../../shared/time.pipes';
 const HELP: Record<Platform, string> = {
   telegram: 'Set TELEGRAM_API_ID / TELEGRAM_API_HASH in backend .env, run "npm run telegram:login", paste TELEGRAM_SESSION, restart.',
   gmail: 'Set GMAIL_CLIENT_ID / GMAIL_CLIENT_SECRET in backend .env, run "npm run gmail:auth", paste GMAIL_REFRESH_TOKEN, restart.',
-  sms: 'Set SMS_WEBHOOK_TOKEN in backend .env, then point your Android forwarder at the webhook URL below.',
+  sms: 'Install the httpSMS app on your Android phone and sign in. Set HTTPSMS_SIGNING_KEY in backend .env and restart, then add a webhook in httpSMS (Settings > Webhooks) with the URL below.',
   whatsapp:
     'Set WHATSAPP_VERIFY_TOKEN and WHATSAPP_APP_SECRET in backend .env and restart. Then in your Meta app (WhatsApp > Configuration) set the callback URL below, the same verify token, and subscribe to the "messages" field.',
 };
@@ -22,9 +22,9 @@ const HELP: Record<Platform, string> = {
 /** Webhook endpoint details shown under each push-based source. */
 const WEBHOOKS: Partial<Record<Platform, { path: string; label: string; note: string }>> = {
   sms: {
-    path: '/webhooks/sms',
-    label: 'Webhook URL for the phone app',
-    note: 'Header: Authorization: Bearer <SMS_WEBHOOK_TOKEN>',
+    path: '/webhooks/httpsms',
+    label: 'Webhook URL for httpSMS (must be public HTTPS)',
+    note: 'In httpSMS > Settings > Webhooks: paste this URL, use your HTTPSMS_SIGNING_KEY as the signing key, and select the "message.phone.received" event (plus the heartbeat events for "phone last seen").',
   },
   whatsapp: {
     path: '/webhooks/whatsapp',

@@ -18,8 +18,24 @@ Connectors without credentials are skipped. The API still runs, and `GET /api/st
 |---|---|
 | **Telegram** | 1. Get `TELEGRAM_API_ID` / `TELEGRAM_API_HASH` at https://my.telegram.org → API development tools<br>2. `npm run telegram:login` → paste the printed `TELEGRAM_SESSION` into `.env` |
 | **Gmail** | 1. Google Cloud Console → enable **Gmail API** → OAuth consent screen (add yourself as test user) → create OAuth client, redirect URI `http://localhost:4001/oauth2callback`<br>2. Put `GMAIL_CLIENT_ID` / `GMAIL_CLIENT_SECRET` in `.env`<br>3. `npm run gmail:auth` → paste the printed `GMAIL_REFRESH_TOKEN` into `.env` |
-| **SMS** | Point your Android forwarder at `POST /webhooks/sms` with header `Authorization: Bearer <SMS_WEBHOOK_TOKEN>` |
+| **SMS (httpSMS)** | See [httpSMS setup](#httpsms-setup-sms) below. |
+| **SMS (own forwarder)** | Alternative: any forwarder that POSTs to `/webhooks/sms` with header `Authorization: Bearer <SMS_WEBHOOK_TOKEN>` |
 | **WhatsApp Business** | Official Cloud API (Meta). See [WhatsApp setup](#whatsapp-business-setup) below. |
+
+## httpSMS setup (SMS)
+
+[httpSMS](https://httpsms.com) runs an app on your Android phone and forwards each incoming SMS to our webhook through its cloud.
+
+1. Install the httpSMS Android app and sign in with the same account as httpsms.com.
+2. `HTTPSMS_SIGNING_KEY` in `.env` is a long random string (one is generated for you). Restart the backend.
+3. At httpsms.com, go to **Settings → Webhooks → Add webhook**:
+   - URL: `https://<your-public-host>/webhooks/httpsms`
+   - Signing key: the same `HTTPSMS_SIGNING_KEY`
+   - Events: `message.phone.received`, plus `phone.heartbeat.online` / `phone.heartbeat.offline` for "phone last seen"
+
+Each request carries a JWT (`Authorization: Bearer …`, HS256, signed with your key), and we reject anything without a valid one. httpSMS retries on 5xx, and duplicates are dropped.
+
+**End-to-end encryption:** leave it **off** for now. httpSMS's docs don't describe how to decrypt messages on our side, so encrypted SMS would show up as unreadable text.
 
 ## WhatsApp Business setup
 
@@ -58,6 +74,7 @@ All `/api/*` routes except `health` and `auth/login` need `Authorization: Bearer
 | GET | `/api/messages/:id` | Full message (with email HTML) |
 | POST | `/webhooks/sms` | SMS from phone (single object or array) |
 | POST | `/webhooks/sms/heartbeat` | Phone "alive" ping |
+| POST | `/webhooks/httpsms` | SMS from httpSMS (JWT-checked) |
 | GET | `/webhooks/whatsapp` | Meta webhook verification (`hub.challenge` echo) |
 | POST | `/webhooks/whatsapp` | WhatsApp messages from Meta (signature-checked) |
 

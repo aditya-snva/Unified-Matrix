@@ -20,6 +20,11 @@ export const env = {
     webhookToken: process.env.SMS_WEBHOOK_TOKEN || '',
   },
 
+  httpsms: {
+    // The "signing key" you enter when creating the webhook in httpSMS (Settings > Webhooks).
+    signingKey: process.env.HTTPSMS_SIGNING_KEY || '',
+  },
+
   whatsapp: {
     // Any string you choose; paste the same value in Meta's webhook settings.
     verifyToken: process.env.WHATSAPP_VERIFY_TOKEN || '',
@@ -49,6 +54,7 @@ export const env = {
 export const isConfigured = {
   telegram: () => Boolean(env.telegram.apiId && env.telegram.apiHash && env.telegram.session),
   gmail: () => Boolean(env.gmail.clientId && env.gmail.clientSecret && env.gmail.refreshToken),
-  sms: () => Boolean(env.sms.webhookToken),
+  // SMS can arrive via httpSMS or via our own /webhooks/sms endpoint.
+  sms: () => Boolean(env.sms.webhookToken || env.httpsms.signingKey),
   whatsapp: () => Boolean(env.whatsapp.verifyToken && env.whatsapp.appSecret),
 };
