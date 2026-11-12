@@ -1,11 +1,6 @@
 # Dependencies
 node_modules/
 
-# Secrets (keep .env.example, never .env)
-.env
-.env.*
-!.env.example
-
 # Build output & caches
 dist/
 out-tsc/
